@@ -12,10 +12,10 @@ const convertPalette = (nodes: ObjectProperty[]) => {
     if (value.type === 'ArrayExpression') {
       const elements = (value.elements as unknown) as [{ value: PaletteAlias }, { value: string }];
       const [alias, opacity] = elements.map(item => item.value);
-      result = `rgba(--var(${alias}), ${opacity})`;
+      result = `rgba(var(--${alias}), ${opacity})`;
     } else if (value.type === 'StringLiteral') {
       const alias = (value.value as unknown) as PaletteAlias;
-      result = `rgb(--var(${alias}))`;
+      result = `rgb(var(--${alias}))`;
     }
 
     if (!!name && !!result) {
