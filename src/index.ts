@@ -1,13 +1,14 @@
 import { parse } from '@babel/parser';
 import { ObjectProperty, SpreadElement, ObjectMethod } from '@babel/types';
 import { PaletteAlias, PaletteConfig, CssVariable, AnyObject } from '@kmart/types';
+import { toCssVar } from "@kmart/utils";
 import { createMacro } from 'babel-plugin-macros';
 
 export type MacroHandler = Parameters<typeof createMacro>[0];
 
 const convertPalette = (nodes: ObjectProperty[]) => {
   return nodes.reduce((prev, { key, value }) => {
-    const name = key.type === 'Identifier' ?  key.name as PaletteAlias : '';
+    const name = key.type === 'Identifier' ?  toCssVar(key.name) as PaletteAlias : '';
     let result;
     if (value.type === 'ArrayExpression') {
       const elements = (value.elements as unknown) as [{ value: PaletteAlias }, { value: string }];
